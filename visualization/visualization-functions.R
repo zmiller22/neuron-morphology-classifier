@@ -1,16 +1,17 @@
 
-cc.pairs.plots <- function(data, output.base.path, lbl.df, output.type, title) {
+cc.pairs.plots <- function(data, output.dir.path, output.name, lbl.df, output.type, title) {
+  #TODO force creation of output directory if it does not exist
   #' Plots three pairs plots of the given data with labels for neurotransmitter type,
   #' cell type, and PVPN cell subtypes
   #' 
   #' @param data A dataframe or matrix of the data to be plotted
-  #' @param output.base.path Path to directory for the plots to be written to
+  #' @param output.dir.path Path to directory for the plots to be written to
   #' @param lbl.df Dataframe containing metadata on the data to be plotted
   #' @param output.type One of "png" or "pdf" to detirmine plot output type
   #' @param title String to be used as the title for the plots
   
   # Create neurotransmitter label groups
-  nt.lbls <- lbls.df$gal4
+  nt.lbls <- lbl.df$gal4
   nt <- NA
   nt[nt.lbls!="vGlut2a" & nt.lbls!="Gad1b"] <- 1
   nt[is.na(nt)] <- 1
@@ -60,9 +61,9 @@ cc.pairs.plots <- function(data, output.base.path, lbl.df, output.type, title) {
   
   if (output.type=="png") {
     # Create output paths
-    nt.output.path <- paste(output.base.path, "/colored_nt_", dim, "v.png", sep="")
-    ct.output.path <- paste(output.base.path, "/colored_ct_", dim, "v.png", sep="")
-    sct.output.path <- paste(output.base.path, "/colored_sct_", dim, "v.png", sep="")
+    nt.output.path <- paste(output.dir.path, "/", output.name, "_colored_nt_", dim, "v.png", sep="")
+    ct.output.path <- paste(output.dir.path, "/", output.name, "_colored_ct_", dim, "v.png", sep="")
+    sct.output.path <- paste(output.dir.path, "/", output.name, "_colored_sct_", dim, "v.png", sep="")
     
     # Plot pairs plot with nt labels
     png(nt.output.path, width=width, height=height, units="in", res=300)
@@ -106,12 +107,12 @@ cc.pairs.plots <- function(data, output.base.path, lbl.df, output.type, title) {
     dev.off()
     
   } else if (output.type=="pdf") {
-    nt.output.path <- paste(output.base.path, "/colored_nt_", dim, "v.pdf", sep="")
-    ct.output.path <- paste(output.base.path, "/colored_ct_", dim, "v.pdf", sep="")
-    sct.output.path <- paste(output.base.path, "/colored_sct_", dim, "v.pdf", sep="")
+    nt.output.path <- paste(output.dir.path, "/", output.name, "_colored_nt_", dim, "v.pdf", sep="")
+    ct.output.path <- paste(output.dir.path, "/", output.name, "_colored_ct_", dim, "v.pdf", sep="")
+    sct.output.path <- paste(output.dir.path, "/", output.name, "_colored_sct_", dim, "v.pdf", sep="")
     
     # Plot pairs plot with nt labels
-    pdf(nt.output.path, width=width, height=height, units="in", res=300)
+    pdf(nt.output.path)
     pairs(data,
           main=title,
           col=nt.colors[nt],
@@ -124,7 +125,7 @@ cc.pairs.plots <- function(data, output.base.path, lbl.df, output.type, title) {
     dev.off()
     
     # Plot pairs plot with ct labels
-    pdf(ct.output.path, width=width, height=height, units="in", res=300)
+    pdf(ct.output.path)
     pairs(data,
           main=title,
           col=ct.colors[ct],
@@ -134,11 +135,11 @@ cc.pairs.plots <- function(data, output.base.path, lbl.df, output.type, title) {
     legend("topright", 
            fill=ct.colors,
            legend=ct.legend.txt,
-           cex=0.75)
+           cex=0.5)
     dev.off()
     
     # Plot pairs plot with sct labels
-    pdf(sct.output.path, width=width, height=height, units="in", res=300)
+    pdf(sct.output.path)
     pairs(data,
           main=title,
           col=sct.colors[sct],
@@ -148,7 +149,7 @@ cc.pairs.plots <- function(data, output.base.path, lbl.df, output.type, title) {
     legend("topright", 
            fill=sct.colors,
            legend=sct.legend.txt,
-           cex=0.75)
+           cex=0.5)
     dev.off()
   }
 }
