@@ -1,6 +1,7 @@
 library(nat)
 library(nat.nblast)
 library(Rtsne)
+library(umap)
 
 #TODO Ensure that masks="none" prevents mask-contingent statstics from being calculated
 convert.nrn <- function(nrn, base.path, masks="none", features="all", graphs="true") {
@@ -63,15 +64,12 @@ my.nblast.mds <- function(in.file.path, out.file.path, k) {
   return(mds.fit)
 }
 
-my.tsne <- function(in.file.path, out.file.path, dims, initial_dims=50, perplexity=30, 
+my.tsne <- function(data, out.file.path, dims, initial_dims=50, perplexity=30, 
                  max_iter=1000, pca=TRUE, row.names=1, num_threads=1) {
   #' Applies tsne to a given .csv file and writes the results to another .csv
-  #' @param in.file.path Path to .csv file to be read in
+  #' @param data Data to apply TSNE to
   #' @param out.file.path Path to the .csv file to be written to 
   #' @param dims Number of dimensions TSNE output dimensions
-  
-  # Read in data
-  data <- read.csv(in.file.path, row.names=row.names)
   
   # Apply tsne with specified parameters and write results to .csv
   data.tsne <- Rtsne(data, dims=dims, initial_dims=initial_dims, perplexity=perplexity, 
@@ -80,6 +78,19 @@ my.tsne <- function(in.file.path, out.file.path, dims, initial_dims=50, perplexi
   
   return(data.tsne)
 }
+
+my.umap <- function(data, out.file.path, dims, n_neighbors) {
+  params <- umap.defaults
+  params$n_components <- dims
+  params$n_neighbors <- n_neighbors
+  
+  umap.data <- umap(data, params)
+  umap.data.df <- umap.data$layout
+  write.csv(umap.data.df, file=out.file.path, row.names=TRUE)
+  return(umap.data)
+}
+
+#my.umap <- function(data, out.file.path, )
 
 #TODO create a function that paralellizes the NBLAST all-by-all function, but first
 # check with Greg Jeffris to see if this already exists

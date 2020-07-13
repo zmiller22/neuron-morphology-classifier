@@ -57,7 +57,7 @@ plot3d(pvpn.3.nrns, soma=TRUE, color="blue")
 plot3d(pvpn.4.nrns, soma=TRUE, color="orange")
 plot3d(pvpn.5.nrns, soma=TRUE, color="brown")
 plot3d(pvpn.6a.nrns, soma=TRUE, color="magenta")
-plot3d(pvpn.6b.nrns, soma=TRUE, color="black")
+plot3d(pvpn.6b.nrns, soma=TRUE, color="yellow")
 plot3d(pvpn.7.nrns, soma=TRUE, color="cyan")
 
 # Plot PVPN class 3 vs 5
@@ -136,7 +136,7 @@ plot3d(pvpn.3.nrns, soma=TRUE, color="blue")
 plot3d(pvpn.4.nrns, soma=TRUE, color="orange")
 plot3d(pvpn.5.nrns, soma=TRUE, color="brown")
 plot3d(pvpn.6a.nrns, soma=TRUE, color="magenta")
-plot3d(pvpn.6b.nrns, soma=TRUE, color="black")
+plot3d(pvpn.6b.nrns, soma=TRUE, color="yellow")
 plot3d(pvpn.7.nrns, soma=TRUE, color="cyan")
 legend3d("topright", 
          fill=sct.colors, 

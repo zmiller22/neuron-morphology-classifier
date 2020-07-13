@@ -20,7 +20,7 @@ umap.plot.output.dir <- "/plots/umap"
 isomap.plot.output.dir <- "/plots/isomap"
 
 # Make sure all output directories exist, make them if they don't
-#TODO fix the error output when the directory already exists
+#TODO fix the error warning output when the directory already exists
 
 ifelse(!dir.exists(tsne.data.output.dir), 
        dir.create(file.path(paste(getwd(), tsne.data.output.dir, sep="")), recursive=TRUE), FALSE)
@@ -115,5 +115,6 @@ my.umap.5v <- function(data, n_neighbors, name) {
 umap.30.nn.10v <- my.umap.5v(mds.data, n_neighbors=30, name="umap_30_perp_10v")
 cc.pairs.plots(umap.30.nn.10v$layout, substring(umap.plot.output.dir, 2), "umap.30.nn.10v", lbls, "png", "UMAP of MDS dimensions")
 
+cc.pairs.plots(mds.data[,1:10], substring(umap.plot.output.dir, 2), "testing", lbls, "png", "testing")
 
 

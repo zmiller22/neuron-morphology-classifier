@@ -153,3 +153,46 @@ cc.pairs.plots <- function(data, output.dir.path, output.name, lbl.df, output.ty
     dev.off()
   }
 }
+
+create.gif <- function(nrns, colors, legend.colors, legend.txt, rotation.angle, gif.delay, 
+                       output.dir, output.name, window.dims=c(0,0,1000,800), zoom=0.8, phi=-60,
+                       clean=TRUE) {
+  
+  # Set parameters and plot
+  open3d()
+  par3d(windowRect=window.dims, zoom=zoom)
+  view3d(theta=0, phi=-60)
+  plot3d(nrns, soma=TRUE, aspect="iso", size=1, axes=F, color=colors)
+  legend3d("topright", 
+           fill=legend.colors, 
+           legend=legend.txt,
+           cex=2)
+  
+  
+  # Create output directory if needed
+  ifelse(!dir.exists(output.dir), 
+         dir.create(file.path(paste(getwd(), "/", output.dir, sep="")), recursive=TRUE), FALSE)
+  animation.dir <- paste(output.dir, "/", sep="")
+  
+  # Save images of each rotation angle
+  U <- par3d("userMatrix")
+  theta.vec <- seq(0, 2*pi, by=rotation.angle*(pi/180))
+  for (i in seq(theta.vec)) {
+    par3d(userMatrix=rotate3d(U, theta.vec[i], 0, 0, 1))
+    rgl.snapshot(filename=paste(paste(animation.dir, "/frame-", sep=""), 
+                                sprintf("%03d", i), ".png", sep=""))
+  }
+  
+  # Use ImageMagick to stitch the images together into a gif
+  move.to.animation.dir <- paste("cd", animation.dir, "&&")
+  ImageMagick.code <- paste("convert -delay ", gif.delay,
+                            " -loop 0 frame*.png ", output.name, ".gif", sep="")
+  run.into.console <- paste(move.to.animation.dir, ImageMagick.code)
+  system(run.into.console)
+  
+  # Remove the png files if requested
+  if(clean==TRUE) {
+    clean.command <- paste("cd", animation.dir, "&&", "rm -rf ./*.png")
+    system(clean.command)
+  }
+}
