@@ -97,6 +97,10 @@ cc.pairs.plots(umap.50.nn$layout, substring(umap.plot.output.dir, 2), "umap.50.n
 cc.pairs.plots(umap.70.nn$layout, substring(umap.plot.output.dir, 2), "umap.70.nn", lbls, "png", "UMAP of MDS dimensions")
 
 
+# Testing stuff
+test.data <- read.csv("/home/zack/Desktop/Lab_Work/Projects/neuron-morphology-classifier/eda/dimensionality_reduction_testing/reduced_dim_data/umap/umap_30_perp.csv",
+                      row.names=1)
+cc.pairs.plots(test.data, substring(umap.plot.output.dir, 2), "test", lbls, "png", "Test UMAP of MDS dimensions")
 
 my.umap.5v <- function(data, n_neighbors, name) {
   params <- umap.defaults
