@@ -16,6 +16,8 @@ convert.nrn <- function(nrn, base.path, masks="none", features="all", graphs="tr
   igraph::write_graph(nrn.graph, graph.path, format="gml")
 }
 
+get.soma.loc <- function(nrn, base.path,)
+
 
 my.nblast <- function(nrns, out.file.path, method, norm.method) {
   #' Applies NBLAST all-by-all with desired parameters and writes the results to a .csv file.
@@ -89,6 +91,8 @@ my.umap <- function(data, out.file.path, dims, n_neighbors) {
   write.csv(umap.data.df, file=out.file.path, row.names=TRUE)
   return(umap.data)
 }
+
+
 
 #my.umap <- function(data, out.file.path, )
 

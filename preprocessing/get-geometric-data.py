@@ -13,32 +13,27 @@ import os
 from os import listdir
 from os.path import isfile, join 
 
-# # Set current location to working directory
-# abspath = os.path.abspath(__file__)
-# dirname =os.path.dirname(abspath)
-# os.chdir(dirname)
-
-
-# swc_files = [f for f in listdir()]
-
-def getGeometricFeatureDF(input_dir, output_path):
+def getGeometricFeatureDF(input_dir, output_path=0):
+    """Function to read in all neurons in a directory, extract their geometric
+    features using L-measure"""
+    #TODO add ability to choose individual features and add the rest of the 
+    # L-measure features
     
     # Get a list of all the .swc files
     swc_files_list = [f for f in listdir(input_dir) if isfile(join(input_dir, f))]
     swc_files_list = [input_dir+"/"+f for f in swc_files_list]
     
-    #TODO split the feature names into the different groups for what measure
-    # should be extracted (average or total_sum) if necessary
-    
+    # Get all the features desired
     total_feature_names = ["Soma_Surface", "N_stems", "N_bifs", "N_branch", 
                            "N_tips", "Length", "TerminalSegment"]
     avg_feature_names = ["Diameter", "EucDistance", "PathDistance", "Branch_Order",
                          "Terminal_degree"]
     feature_names = total_feature_names+avg_feature_names
     
+    # Calculate all the features
     LMfeatures = pm.getMeasure(feature_names, swc_files_list)
     
-    #TODO export geometric featurez into a dataframe
+    # Put extracted features into a dataframe
     df = pd.DataFrame()
     for i, feature in enumerate(LMfeatures):
         
@@ -55,16 +50,21 @@ def getGeometricFeatureDF(input_dir, output_path):
     row_names = [os.path.basename(path).strip(".swc") for path in swc_files_list]
     df.index = row_names
     
+    # Write dataframe to output csv
+    if output_path!=0:
+        df.to_csv(output_path)
+    
     
     return df
     
 #%%
-test = getGeometricFeatureDF("/home/zack/Desktop/Lab_Work/Projects/neuron-morphology-classifier/testing/test_nrns", "test")
+# test = getGeometricFeatureDF("/home/zack/Desktop/Lab_Work/Projects/neuron-morphology-classifier/testing/test_nrns", 
+#                              "/home/zack/Desktop/Lab_Work/Projects/neuron-morphology-classifier/testing/test.csv")
 
 #%%
-df = pd.DataFrame()
-for i, feature in enumerate(LMfeatures):
-    feature_dict = feature["WholeCellMeasuresDict"]
-    nrn_feature_list = [nrn["Average"] for nrn in feature_dict]
+# df = pd.DataFrame()
+# for i, feature in enumerate(test):
+#     feature_dict = feature["WholeCellMeasuresDict"]
+#     nrn_feature_list = [nrn["Average"] for nrn in feature_dict]
     
-    df[ feature_names[i] ] = nrn_feature_list
+#     df[ feature_names[i] ] = nrn_feature_list
