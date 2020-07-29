@@ -24,9 +24,9 @@ def getGeometricFeatureDF(input_dir, output_path=0):
     swc_files_list = [input_dir+"/"+f for f in swc_files_list]
     
     # Get all the features desired
-    total_feature_names = ["Soma_Surface", "N_stems", "N_bifs", "N_branch", 
+    total_feature_names = ["N_stems", "N_bifs", "N_branch", 
                            "N_tips", "Length", "TerminalSegment"]
-    avg_feature_names = ["Diameter", "EucDistance", "PathDistance", "Branch_Order",
+    avg_feature_names = ["EucDistance", "PathDistance", "Branch_Order",
                          "Terminal_degree"]
     feature_names = total_feature_names+avg_feature_names
     

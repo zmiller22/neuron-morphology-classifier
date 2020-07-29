@@ -1,4 +1,5 @@
 library(nat)
+library(reticulate)
 
 get.spatial.features <- function(nrns) {
   #TODO add option to pick features
@@ -36,6 +37,19 @@ get.spatial.features <- function(nrns) {
   # Set the row names of the dataframe to the neuron names for easy column
   # merging with other files
   rownames(df) <- row.names
+  
+  return(df)
+}
+
+get.geometric.features <- function(input.dir, output.path=0) {
+  #TODO add option to select only specific features
+  #TODO figure out a way to make sure reticulate finds the proper python
+  # installation on different peoples systems
+  
+  use_condaenv("neuron_classifier")
+  source_python("/home/zack/Desktop/Lab_Work/Projects/neuron-morphology-classifier/preprocessing/get-geometric-data.py")
+  
+  df <- getGeometricFeatureDF(input.dir, output.path)
   
   return(df)
 }
